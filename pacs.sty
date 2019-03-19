@@ -1,0 +1,92 @@
+\ProvidesPackage{pacs}
+%---pacotes para hiphenizacao e acentuacao em portugues
+\usepackage[english]{babel}
+\usepackage{lmodern}			% Usa a fonte Latin Modern
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage[pdftex]{color,graphicx}
+\usepackage{import}
+
+%--- pacote para figuras
+\usepackage{epsf}
+\usepackage[dvips]{epsfig,graphicx}
+\usepackage{floatrow}
+\usepackage{subfigure}
+
+%--- pacote de simbolos
+\usepackage{latexsym}
+\usepackage{textcomp}
+
+%--- simbolos matematicos
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%--- pacote para gerar pseudo-codigo
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{float}
+% \usepackage{minted}
+\usepackage[most, minted]{tcolorbox}
+
+
+\newtcblisting[auto counter]{code}[2][]{%
+    listing engine=minted,
+    colback=white,
+    title={\thetcbcounter: #2},
+    label=#2,
+    minted style=manni,
+    sharp corners,
+    minted language=ruby,
+    listing only,
+    listing remove caption=false,
+    breakable,
+    enhanced,
+    minted options = {
+        linenos,
+        mathescape,
+        autogobble,
+        escapeinside=||,
+        fontsize=\footnotesize,
+        numbersep=2mm
+    },
+    overlay={%
+        \begin{tcbclipinterior}
+            \fill[grey!25] (frame.south west) rectangle ([xshift=5mm]frame.north west);
+        \end{tcbclipinterior}
+    }
+
+}
+
+%--- outros pacotes
+\usepackage{url}
+\usepackage{longtable}
+\usepackage{lscape}
+\usepackage{booktabs}
+%\usepackage{hyperref}%
+%Tabela Colorida
+\usepackage{colortbl}
+
+\usepackage{tabularx,lipsum,environ,amsmath,amssymb}
+\usepackage{diagbox}
+\usepackage{amsthm}
+\usepackage{svg}
+\usepackage{mathtools}
+
+\usepackage[final]{pdfpages}
+
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{rotating}
+
+\newcommand{\cclass}[1]{\mathcal{#1}}
+
+\definecolor{grena}{HTML}{971528}
+\definecolor{nice}{HTML}{38b446}
+\definecolor{warn}{HTML}{e2cb49}
+\renewcommand{\P}{\textcolor{nice}{\textit{P}}}
+\newcommand{\NPc}{\textcolor{grena}{\textit{NPc}}}
+\newcommand{\?}{\textcolor{warn}{?}}
+
+\usemintedstyle{manni}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
