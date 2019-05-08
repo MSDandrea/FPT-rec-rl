@@ -1,1 +1,87 @@
 \chapter{Introduction}
+
+\section{Current results}
+
+In this section we will explore the current state of the complexity analysis as $r$ and $\ell$ grows. As we fullfill the following table we expose the strategies and how those can be used to enlight the more complex results.
+
+The most trivial result is the recognition of the $(1,0)$-graphs, as in order to recognize it we just need to know if $|E(G)| > 0$. Therefore it's complexity is \O{1}.
+
+\begin{table}[h!]
+  \caption{Incomplete complexity analysis of the \RL-partite recognition problem}
+  \label{}
+  \center
+  \begin{tabular}{l|*{6}c}
+    \toprule
+    \backslashbox{$r$}{$\ell$} & 0 & 1 & 2 & 3 & 4 & \ldots \\
+    \midrule
+    0 & -  & \? & \? & \? & \? & \ldots \\
+    1 & \O{1} & \? & \? & \? & \? & \ldots \\
+    2 & \? & \? & \? & \? & \? & \ldots \\
+    3 & \? & \? & \? & \? & \? & \ldots \\
+    4 & \? & \? & \? & \? & \? & \ldots \\
+    $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ \\
+  \end{tabular}
+\end{table}
+
+\subsection{$m$-bounded results}
+\begin{table}[h!]
+  \caption{Incomplete complexity analysis of the \RL-partite recognition problem}
+  \label{}
+  \center
+  \begin{tabular}{l|*{6}c}
+    \toprule
+    \backslashbox{$r$}{$\ell$} & 0 & 1 & 2 & 3 & 4 & \ldots \\
+    \midrule
+    0 & -  & \O{m} & \O{m} & \? & \? & \ldots \\
+    1 & \O{1} & \O{m} & \? & \? & \? & \ldots \\
+    2 & \O{m} & \? & \? & \? & \? & \ldots \\
+    3 & \? & \? & \? & \? & \? & \ldots \\
+    4 & \? & \? & \? & \? & \? & \ldots \\
+    $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ \\
+  \end{tabular}
+\end{table}
+
+\subsection{$NP$-Complete results}
+asdjkashjfasdhgdjasd
+asdjkasfakjh
+asdjkasfakjhasda
+
+
+asdjkashjfasdhgdjasd
+
+asdjkashjfasdhgdjasd
+\begin{table}[h!]
+  \caption{Incomplete complexity analysis of the \RL-partite recognition problem}
+  \label{}
+  \center
+  \begin{tabular}{l|*{6}c}
+    \toprule
+    \backslashbox{$r$}{$\ell$} & 0 & 1 & 2 & 3 & 4 & \ldots \\
+    \midrule
+    0 & -  & \O{m} & \O{m} & \NPc & \NPc & \ldots \\
+    1 & \O{1} & \O{m} & \? & \NPc & \NPc & \ldots \\
+    2 & \O{m} & \? & \? & \NPc & \NPc & \ldots \\
+    3 & \NPc & \NPc & \NPc & \NPc & \NPc & \ldots \\
+    4 & \NPc & \NPc & \NPc & \NPc & \NPc & \ldots \\
+    $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ \\
+  \end{tabular}
+\end{table}
+
+\subsection{Frontier results}
+
+\begin{table}[h!]
+  \caption{Current complexity analysis of the \RL-partite recognition problem}
+  \label{table:current-values}
+  \center
+  \begin{tabular}{l|*{6}c}
+    \toprule
+    \backslashbox{$r$}{$\ell$} & 0 & 1 & 2 & 3 & 4 & \ldots \\
+    \midrule
+    0 & -  & \O{m} & \O{m} & \NPc & \NPc & \ldots \\
+    1 & \O{1} & \O{m} & \O{n^4} & \NPc & \NPc & \ldots \\
+    2 & \O{m} & \O{n^4} & \O{n^{12}} & \NPc & \NPc & \ldots \\
+    3 & \NPc & \NPc & \NPc & \NPc & \NPc & \ldots \\
+    4 & \NPc & \NPc & \NPc & \NPc & \NPc & \ldots \\
+    $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ \\
+  \end{tabular}
+\end{table}

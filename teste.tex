@@ -4,11 +4,12 @@
 \usepackage{pacs}
 
 \begin{document}
+\svgsetup{inkscapelatex=false}
 
-\input{chapters/header.tex}
-\input{chapters/1.tex}
-
-\bibliography{bibliography}{}
-\bibliographystyle{plain}
+\begin{figure}
+  \includesvg{figures/test.svg}
+  \caption{Wow a svg}
+  \label{svg:wow}
+\end{figure}
 
 \end{document}

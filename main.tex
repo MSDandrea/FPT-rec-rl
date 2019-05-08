@@ -1,14 +1,27 @@
 
-\documentclass{report}
-
+\documentclass[
+	% -- opções da classe memoir --
+	12pt,				% tamanho da fonte
+	openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
+	oneside,			% para impressão em verso e anverso. Oposto a oneside
+	a4paper,			% tamanho do papel.
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+  english
+	]{abntex2}
 \usepackage{pacs}
 
 \begin{document}
+\selectlanguage{english}
 
 \input{chapters/header.tex}
 \input{chapters/1.tex}
 
-\bibliography{bibliography}{}
-\bibliographystyle{plain}
+\bibliography{bibliography}
+
 
 \end{document}

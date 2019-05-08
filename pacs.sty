@@ -6,6 +6,7 @@
 \usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
 \usepackage[pdftex]{color,graphicx}
 \usepackage{import}
+\usepackage[num]{abntex2cite}
 
 %--- pacote para figuras
 \usepackage{epsf}
@@ -83,10 +84,13 @@
 \definecolor{grena}{HTML}{971528}
 \definecolor{nice}{HTML}{38b446}
 \definecolor{warn}{HTML}{e2cb49}
-\renewcommand{\P}{\textcolor{nice}{\textit{P}}}
-\newcommand{\NPc}{\textcolor{grena}{\textit{NPc}}}
+\newcommand{\RL}{$(r,\ell)$}
+\renewcommand{\O}[1]{$\mathcal{O}(#1)$}
+\renewcommand{\P}{\mathcal{P}}
+\newcommand{\NPc}{\textit{NPc}}
 \newcommand{\?}{\textcolor{warn}{?}}
 
 \usemintedstyle{manni}
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
 \newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+\usetikzlibrary{graphs}
