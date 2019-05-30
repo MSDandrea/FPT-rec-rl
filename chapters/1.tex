@@ -24,32 +24,39 @@ The most trivial result is the recognition of the $(1,0)$-graphs, as in order to
 \end{table}
 
 \subsection{$m$-bounded results}
-\begin{table}[h!]
-  \caption{Incomplete complexity analysis of the \RL-partite recognition problem}
-  \label{}
-  \center
-  \begin{tabular}{l|*{6}c}
-    \toprule
-    \backslashbox{$r$}{$\ell$} & 0 & 1 & 2 & 3 & 4 & \ldots \\
-    \midrule
-    0 & -  & \O{m} & \O{m} & \? & \? & \ldots \\
-    1 & \O{1} & \O{m} & \? & \? & \? & \ldots \\
-    2 & \O{m} & \? & \? & \? & \? & \ldots \\
-    3 & \? & \? & \? & \? & \? & \ldots \\
-    4 & \? & \? & \? & \? & \? & \ldots \\
-    $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ \\
-  \end{tabular}
-\end{table}
+
+Naturally, we wish to find the complexity for those problems of small partition cardinality.
+
+At \cite{konig36}, König showed that it takes \O{m} steps to recognize a bipartite graph. For complete graphs, is enough to check if $|E(G)|=n(n-1)/2$, if it doesn't then we have an answer; If it does, checking vertex by vertex if it's neighborhood contains all other vertex is \O{m}.
+
+For co-bipartite graphs recognition, we need only to verify if it's complement is a bipartite graph. The recognition of a split graph can be done using their vertex degrees \cite{??}, obtaining all vertices degrees is \O{m} therefore the recognition of split graphs is \O{m}
+% \begin{table}[h!]
+%   \caption{Incomplete complexity analysis of the \RL-partite recognition problem}
+%   \label{}
+%   \center
+%   \begin{tabular}{l|*{6}c}
+%     \toprule
+%     \backslashbox{$r$}{$\ell$} & 0 & 1 & 2 & 3 & 4 & \ldots \\
+%     \midrule
+%     0 & -  & \O{m} & \O{m} & \? & \? & \ldots \\
+%     1 & \O{1} & \O{m} & \? & \? & \? & \ldots \\
+%     2 & \O{m} & \? & \? & \? & \? & \ldots \\
+%     3 & \? & \? & \? & \? & \? & \ldots \\
+%     4 & \? & \? & \? & \? & \? & \ldots \\
+%     $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ \\
+%   \end{tabular}
+% \end{table}
 
 \subsection{$NP$-Complete results}
-asdjkashjfasdhgdjasd
-asdjkasfakjh
-asdjkasfakjhasda
 
+A adequate strategy at this moment is to find when the recognition problem gets $NP$-Complete.
 
-asdjkashjfasdhgdjasd
+At \cite{gareyjohnson} is shown that 3-coloring a graph (i.e. assign a color between three possibles to each vertex such that no neighborhood repeats a color) is $NP$-Complete, it's trivial to see how the 3-coloring of a graph can be reduced to the problem of finding if a graph is a $(3,0)$-graph, therefore the recognition of $(3,0)$-graphs is $NP$-Complete.
 
-asdjkashjfasdhgdjasd
+It's noticible that the recognition of \RL-graphs is monotonic, and therefore if the recognition of $(3,0)$-graphs are $NP$-Complete then the recognition of any $(r,0)$-graph or $(3,\ell)$-graph is $NP$-Complete for $r > 3$ and $\ell >0$.
+
+We can extrapolate these findings and argument that the recognition of a $(0,3)$-graph is also $NP$-Complete, as it is the same as recognize it's complement as a $(3,0)$-graph, and use the property of monotonicity to state that the recognition of any $(r,3)$-graph or $(0,\ell)$-graph is $NP$-Complete for $r > 0$ and $\ell >3$.
+
 \begin{table}[h!]
   \caption{Incomplete complexity analysis of the \RL-partite recognition problem}
   \label{}
@@ -68,6 +75,13 @@ asdjkashjfasdhgdjasd
 \end{table}
 
 \subsection{Frontier results}
+
+Finally, the frontier cases $(1,2)$,$(2,1)$ and $(2,2)$ were subject of studies by Brandstädt\cite{brand-84,brand-96}. He's findings show that:
+\begin{itemize}
+  \item Recognition of $(1,2)$-graphs are \O{n^4}.
+  \item Recognition of $(2,1)$-graphs are \O{n^4}.
+  \item Recognition of $(2,2)$-graphs are \O{n^{12}}.
+\end{itemize}
 
 \begin{table}[h!]
   \caption{Current complexity analysis of the \RL-partite recognition problem}
