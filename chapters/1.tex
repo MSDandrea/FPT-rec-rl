@@ -99,3 +99,44 @@ Finally, the frontier cases $(1,2)$,$(2,1)$ and $(2,2)$ were subject of studies 
     $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ \\
   \end{tabular}
 \end{table}
+
+\section{On the recognition of $(2,1)$-graphs}
+
+In this section we will describe a algorithm to recognize a $(2,1)$-graph.
+
+Let $G$ be a graph which we wish to know if posses a $(2,1)$-partition. In order for $G$ to accept a $(2,1)$-partition a necessary condition is that no vertex $v \in V(G)$ can spawn a open neighborhood $N$ which does not induces a split graph, or, the vertices not in $N$ should induce a bipartite graph.
+
+This conditions leads us to the following algorithm:
+
+\begin{code}{Is not (2,1)-partitionated}
+  def is_Not_21(Graph G) Bool
+    for v in V(G) begin
+      N = open_neighborhood(v)
+      K = V(G) - N
+      if (!is_Split(N) and !is_Bipartite(K))
+        return true;
+    end
+    return false;
+  end
+\end{code}
+
+A `false` return from the algorithm described above, doesn't indicates that the graph is a $(2,1)$-graph, but raises a interesting condition.
+
+Let $A$ be the set of vertices that posses the property where it's open neighborhood($N$) induces a split graph in $G$, and $B$ the set of vertices that the not-neighborhood induces a bipartite graph. If $A \cap B = \emptyset$ then the graph is a $(2,1)$-graph; Otherwise the graph is guarantee to be a $(3,1)$-graph, since there's a vertex which is capable of delimiting 3 disjointed stable sets (Both from the one induced by the not-neighborhood and the on induced by the neighborhood) and a clique (induced by the neighborhood). Then the remaining work shall be to determine if the $(3,1)$-graph is a $(2,1)$-graph.
+
+\begin{code}{Get a (3,1)-partition}
+  def get_31(Graph G) 3-1-Partition
+    for v in V(G) begin
+      N = open_neighborhood(v)
+      K = V(G) - N
+      if (is_Split(N) and is_Bipartite(K))
+        return new 3-1-Partition{
+          R1: K.R1,
+          R2: K.R2,
+          R3: N.R,
+          L: N.L
+          };
+    end
+    return empty31();
+  end
+\end{code}
