@@ -49,7 +49,7 @@ For co-bipartite graphs recognition, we need only to verify if it's complement i
 
 \subsection{$NP$-Complete results}
 
-A adequate strategy at this moment is to find when the recognition problem gets $NP$-Complete.
+An adequate strategy at this moment is to find when the recognition problem gets $NP$-Complete.
 
 At \cite{gareyjohnson} is shown that 3-coloring a graph (i.e. assign a color between three possibles to each vertex such that no neighborhood repeats a color) is $NP$-Complete, it's trivial to see how the 3-coloring of a graph can be reduced to the problem of finding if a graph is a $(3,0)$-graph, therefore the recognition of $(3,0)$-graphs is $NP$-Complete.
 
@@ -100,43 +100,100 @@ Finally, the frontier cases $(1,2)$,$(2,1)$ and $(2,2)$ were subject of studies 
   \end{tabular}
 \end{table}
 
-\section{On the recognition of $(2,1)$-graphs}
+\section{Brandstädt's recognition of $(2,1)$-graphs}
 
-In this section we will describe a algorithm to recognize a $(2,1)$-graph.
+In this section we will describe the algorithm designed by Brandstädt to recognize a $(2,1)$-graph.
 
-Let $G$ be a graph which we wish to know if posses a $(2,1)$-partition. In order for $G$ to accept a $(2,1)$-partition a necessary condition is that no vertex $v \in V(G)$ can spawn a open neighborhood $N$ which does not induces a split graph, or, the vertices not in $N$ should induce a bipartite graph.
+Let $G$ be a graph. In order for $G$ to accept a $(2,1)$-partition a necessary condition is that for any vertex $v \in V(G)$:
+
+\begin{itemize}
+\item (N1) $N(v)$ induces a split graph.
+\item (N2) Or, $\bar{N}(v)$ should induces a bipartite graph
+\end{itemize}
+
+More specifically, if $G$ has a $(2,1)$-partition $I_1,I_2,C$ then (N2) holds for every vertex $v \in C$ and (N1) holds for the vertices $v \in I_1 \cup I_2$
+
+Let A be the set of vertices that is satisfied by (N1), let B be the set o vertices satisfied by (N2) then if $R=A \cap B=\emptyset$ then we already have a $(2,1)$-partition of G. Otherwise 
+
+
 
 This conditions leads us to the following algorithm:
 
-\begin{code}{Is not (2,1)-partitionated}
-  def is_Not_21(Graph G) Bool
-    for v in V(G) begin
-      N = open_neighborhood(v)
-      K = V(G) - N
-      if (!is_Split(N) and !is_Bipartite(K))
-        return true;
+
+\begin{code}{Get (2,1)-partition}
+  def Get_21(Graph G) 2-1-Partition
+    for v in V(G) do
+      N = |$N(v)$| # open neighboorhood of v
+      K = |$\bar{N}(v)$| # V(G) - N
+      if (!N.is_Split() and !K.is_Bipartite()) then
+        return None; # G $\notin$ (2,1)
     end
-    return false;
+    cl = { v in V(G) : !|$N(v)$|.is_Split() and |$\bar{N}(v)$|.is_Bipartite() }
+    bi = { v in V(G) : |$N(v)$|.is_Split() and !|$\bar{N}(v)$|.is_Bipartite() }
+    if ( !cl.is_Clique() or !bi.is_Bipartite()) then
+      return None; # G $\notin$ (2,1)
+    R = {v in V(G) : |$N(v)$|.is_Split() and |$\bar{N}(v)$|.is_Bipartite()}
+    if R.is_Empty() then
+      return new 2-1-Partition {
+        |$I_1$|: bi.|$I_1$|,
+        |$I_2$|: bi.|$I_2$|,
+        |$C$|: cl
+      }
+    else return AllocateR()
   end
 \end{code}
 
-A `false` return from the algorithm described above, doesn't indicates that the graph is a $(2,1)$-graph, but raises a interesting condition.
-
-Let $A$ be the set of vertices that posses the property where it's open neighborhood($N$) induces a split graph in $G$, and $B$ the set of vertices that the not-neighborhood induces a bipartite graph. If $A \cap B = \emptyset$ then the graph is a $(2,1)$-graph; Otherwise the graph is guarantee to be a $(3,1)$-graph, since there's a vertex which is capable of delimiting 3 disjointed stable sets (Both from the one induced by the not-neighborhood and the on induced by the neighborhood) and a clique (induced by the neighborhood). Then the remaining work shall be to determine if the $(3,1)$-graph is a $(2,1)$-graph.
-
-\begin{code}{Get a (3,1)-partition}
-  def get_31(Graph G) 3-1-Partition
-    for v in V(G) begin
-      N = open_neighborhood(v)
-      K = V(G) - N
-      if (is_Split(N) and is_Bipartite(K))
-        return new 3-1-Partition{
-          R1: K.R1,
-          R2: K.R2,
-          R3: N.R,
-          L: N.L
-          };
-    end
-    return empty31();
+\begin{code}{My Code}
+def Get_21(Graph G) 2-1-Partition
+  for v in V(G) do # $\O{n}$
+      N = |$N(v)$| # open neighboorhood of v
+      K = |$\bar{N}(v)$| # V(G) - N
+      if (!N.is_Split() and !K.is_Bipartite()) then
+        return None; # G $\notin$ (2,1)
   end
+  cl = { v in V(G) : !|$N(v)$|.is_Split() and |$\bar{N}(v)$|.is_Bipartite() }
+  bi = { v in V(G) : |$N(v)$|.is_Split() and !|$\bar{N}(v)$|.is_Bipartite() }
+  if ( !cl.is_Clique() or !bi.is_Bipartite()) then
+    return None; # G $\notin$ (2,1)
+  R = {v in V(G) : |$N(v)$|.is_Split() and |$\bar{N}(v)$|.is_Bipartite()}
+  if R.is_Empty() then
+    return new 2-1-Partition {
+      |$I_1$|: bi.|$I_1$|,
+      |$I_2$|: bi.|$I_2$|,
+      |$C$|: cl
+    }
+  else 
+    for v in R do # $\O{n²}$
+      H = new 3-1-Partition{
+        |$I_1$|: |$\bar{N}(v)$.$I_1$|
+        |$I_2$|: |$\bar{N}(v)$.$I_2$|
+        |$I_3$|: |$N(v)$.$I$|
+        |$C$|: |$N(v)$.$C$|
+      }
+      I = |$\bigcup\limits_{k=1}^3 H.I_k$|
+      capable = { u in I : |$ \size{N(u) \cap H.C } \geq \size{H.C}-2$| }  
+      if !(I \ capable).is_Bipartite() then next;# This v of R can't induce a 2-1
+      capable = { u in capable : }
+end
 \end{code}
+
+% A `false` return from the algorithm described above, doesn't indicates that the graph is a $(2,1)$-graph, but raises a interesting condition.
+
+% Let $A$ be the set of vertices that posses the property where it's open neighborhood($N$) induces a split graph in $G$, and $B$ the set of vertices that the not-neighborhood induces a bipartite graph. If $A \cap B = \emptyset$ then the graph is a $(2,1)$-graph; Otherwise the graph is guarantee to be a $(3,1)$-graph, since there's a vertex which is capable of delimiting 3 disjointed stable sets (Both from the one induced by the not-neighborhood and the on induced by the neighborhood) and a clique (induced by the neighborhood). Then the remaining work shall be to determine if the $(3,1)$-graph is a $(2,1)$-graph.
+
+% \begin{code}{Get a (3,1)-partition}
+%   def get_31(Graph G) 3-1-Partition
+%     for v in V(G) do
+%       N = open_neighborhood(v)
+%       K = V(G) - N
+%       if (is_Split(N) and is_Bipartite(K))
+%         return new 3-1-Partition{
+%           R1: K.R1,
+%           R2: K.R2,
+%           R3: N.R,
+%           L: N.L
+%           };
+%     end
+%     return empty31();
+%   end
+% \end{code}

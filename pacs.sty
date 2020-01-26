@@ -35,7 +35,7 @@
     colback=white,
     title={\thetcbcounter: #2},
     label=#2,
-    minted style=manni,
+    minted style=friendly,
     sharp corners,
     minted language=ruby,
     listing only,
@@ -52,7 +52,7 @@
     },
     overlay={%
         \begin{tcbclipinterior}
-            \fill[grey!25] (frame.south west) rectangle ([xshift=5mm]frame.north west);
+            \fill[gray!25] (frame.south west) rectangle ([xshift=5mm]frame.north west);
         \end{tcbclipinterior}
     }
 
@@ -89,8 +89,8 @@
 \renewcommand{\P}{\mathcal{P}}
 \newcommand{\NPc}{\textit{NPc}}
 \newcommand{\?}{\textcolor{warn}{?}}
+\newcommand{\size}[1]{|#1|}
 
-\usemintedstyle{manni}
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
 \newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
 \usetikzlibrary{graphs}
