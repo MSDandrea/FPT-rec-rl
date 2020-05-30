@@ -139,43 +139,50 @@ This conditions leads us to the following algorithm:
         |$I_2$|: bi.|$I_2$|,
         |$C$|: cl
       }
-    else return AllocateR()
+    else return AllocateR(bi,cl,R)
   end
 \end{code}
 
-\begin{code}{My Code}
-def Get_21(Graph G) 2-1-Partition
-  for v in V(G) do # $\O{n}$
-      N = |$N(v)$| # open neighboorhood of v
-      K = |$\bar{N}(v)$| # V(G) - N
-      if (!N.is_Split() and !K.is_Bipartite()) then
-        return None; # G $\notin$ (2,1)
-  end
-  cl = { v in V(G) : !|$N(v)$|.is_Split() and |$\bar{N}(v)$|.is_Bipartite() }
-  bi = { v in V(G) : |$N(v)$|.is_Split() and !|$\bar{N}(v)$|.is_Bipartite() }
-  if ( !cl.is_Clique() or !bi.is_Bipartite()) then
-    return None; # G $\notin$ (2,1)
-  R = {v in V(G) : |$N(v)$|.is_Split() and |$\bar{N}(v)$|.is_Bipartite()}
-  if R.is_Empty() then
-    return new 2-1-Partition {
-      |$I_1$|: bi.|$I_1$|,
-      |$I_2$|: bi.|$I_2$|,
-      |$C$|: cl
-    }
-  else 
-    for v in R do # $\O{n²}$
-      H = new 3-1-Partition{
-        |$I_1$|: |$\bar{N}(v)$.$I_1$|
-        |$I_2$|: |$\bar{N}(v)$.$I_2$|
-        |$I_3$|: |$N(v)$.$I$|
-        |$C$|: |$N(v)$.$C$|
-      }
-      I = |$\bigcup\limits_{k=1}^3 H.I_k$|
-      capable = { u in I : |$ \size{N(u) \cap H.C } \geq \size{H.C}-2$| }  
-      if !(I \ capable).is_Bipartite() then next;# This v of R can't induce a 2-1
-      capable = { u in capable : }
-end
+\begin{code}{AllocateR}
+  def AllocateR(bi Bipartite, cl Clique, R Graph)
+    if R.is_Split() then
+      
+
 \end{code}
+
+% \begin{code}{My Code}
+% def Get_21(Graph G) 2-1-Partition
+%   for v in V(G) do # $\O{n}$
+%       N = |$N(v)$| # open neighboorhood of v
+%       K = |$\bar{N}(v)$| # V(G) - N
+%       if (!N.is_Split() and !K.is_Bipartite()) then
+%         return None; # G $\notin$ (2,1)
+%   end
+%   cl = { v in V(G) : !|$N(v)$|.is_Split() and |$\bar{N}(v)$|.is_Bipartite() }
+%   bi = { v in V(G) : |$N(v)$|.is_Split() and !|$\bar{N}(v)$|.is_Bipartite() }
+%   if ( !cl.is_Clique() or !bi.is_Bipartite()) then
+%     return None; # G $\notin$ (2,1)
+%   R = {v in V(G) : |$N(v)$|.is_Split() and |$\bar{N}(v)$|.is_Bipartite()}
+%   if R.is_Empty() then
+%     return new 2-1-Partition {
+%       |$I_1$|: bi.|$I_1$|,
+%       |$I_2$|: bi.|$I_2$|,
+%       |$C$|: cl
+%     }
+%   else 
+%     for v in R do # $\O{n²}$
+%       H = new 3-1-Partition{
+%         |$I_1$|: |$\bar{N}(v)$.$I_1$|
+%         |$I_2$|: |$\bar{N}(v)$.$I_2$|
+%         |$I_3$|: |$N(v)$.$I$|
+%         |$C$|: |$N(v)$.$C$|
+%       }
+%       I = |$\bigcup\limits_{k=1}^3 H.I_k$|
+%       capable = { u in I : |$ \size{N(u) \cap H.C } \geq \size{H.C}-2$| }  
+%       if !(I \ capable).is_Bipartite() then next;# This v of R can't induce a 2-1
+%       capable = { u in capable : }
+% end
+% \end{code}
 
 % A `false` return from the algorithm described above, doesn't indicates that the graph is a $(2,1)$-graph, but raises a interesting condition.
 
