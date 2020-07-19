@@ -1,14 +1,16 @@
-\chapter{Introduction}
+\chapter{Introduction}\label{ch:introduction}
 
-\section{Current results}
 
-In this section we will explore the current state of the complexity analysis as $r$ and $\ell$ grows. As we fullfill the following table we expose the strategies and how those can be used to enlight the more complex results.
+\section{Current results}\label{sec:current-results}
 
-The most trivial result is the recognition of the $(1,0)$-graphs, as in order to recognize it we just need to know if $|E(G)| > 0$. Therefore it's complexity is \O{1}.
+In this section we will explore the current state of the complexity analysis as $r$ and $\ell$ grows.
+As we fulfill the following table we expose the strategies and how those can be used to enlighten the more complex results.
+
+The most trivial result is the recognition of the $(1,0)$-graphs, as in order to recognize it we just need to know if $|E(G)| > 0$.
+Therefore, it's complexity is \O{1}.
 
 \begin{table}[h!]
   \caption{Incomplete complexity analysis of the \RL-partite recognition problem}
-  \label{}
   \center
   \begin{tabular}{l|*{6}c}
     \toprule
@@ -20,16 +22,19 @@ The most trivial result is the recognition of the $(1,0)$-graphs, as in order to
     3 & \? & \? & \? & \? & \? & \ldots \\
     4 & \? & \? & \? & \? & \? & \ldots \\
     $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ \\
-  \end{tabular}
+  \end{tabular}\label{tab:unknown-table}
 \end{table}
 
-\subsection{$m$-bounded results}
+\subsection{$m$-bounded results}\label{subsec:m-bounded-results}
 
 Naturally, we wish to find the complexity for those problems of small partition cardinality.
 
-At \cite{konig36}, König showed that it takes \O{m} steps to recognize a bipartite graph. For complete graphs, is enough to check if $|E(G)|=n(n-1)/2$, if it doesn't then we have an answer; If it does, checking vertex by vertex if it's neighborhood contains all other vertex is \O{m}.
+At \cite{konig36}, König showed that it takes \O{m} steps to recognize a bipartite graph.
+For complete graphs, is enough to check if $|E(G)|=n(n-1)/2$, if it doesn't then we have an answer;
+If it does, checking vertex by vertex if it's neighborhood contains all other vertex is \O{m}.
 
-For co-bipartite graphs recognition, we need only to verify if it's complement is a bipartite graph. The recognition of a split graph can be done using their vertex degrees \cite{??}, obtaining all vertices degrees is \O{m} therefore the recognition of split graphs is \O{m}
+For co-bipartite graphs recognition, we need only to verify if it's complement is a bipartite graph.
+The recognition of a split graph can be done using their vertex degrees , obtaining all vertices degrees is \O{m} therefore, the recognition of split graphs is \O{m}
 % \begin{table}[h!]
 %   \caption{Incomplete complexity analysis of the \RL-partite recognition problem}
 %   \label{}
@@ -51,15 +56,18 @@ For co-bipartite graphs recognition, we need only to verify if it's complement i
 
 An adequate strategy at this moment is to find when the recognition problem gets $NP$-Complete.
 
-At \cite{gareyjohnson} is shown that 3-coloring a graph (i.e. assign a color between three possibles to each vertex such that no neighborhood repeats a color) is $NP$-Complete, it's trivial to see how the 3-coloring of a graph can be reduced to the problem of finding if a graph is a $(3,0)$-graph, therefore the recognition of $(3,0)$-graphs is $NP$-Complete.
+At \cite{gareyjohnson} is shown that 3-coloring a graph (i.e. assign a color between three possibles to each vertex such that no neighborhood repeats a color) is $NP$-Complete,
+it's trivial to see how the 3-coloring of a graph can be reduced to the problem of finding if a graph is a $(3,0)$-graph,
+therefore the recognition of $(3,0)$-graphs is $NP$-Complete.
 
-It's noticible that the recognition of \RL-graphs is monotonic, and therefore if the recognition of $(3,0)$-graphs are $NP$-Complete then the recognition of any $(r,0)$-graph or $(3,\ell)$-graph is $NP$-Complete for $r > 3$ and $\ell >0$.
+It's noticeable that the recognition of \RL-graphs is monotonic, and therefore if the recognition of $(3,0)$-graphs are $NP$-Complete then the recognition of any $(r,0)$-graph or $(3,\ell)$-graph is $NP$-Complete for $r > 3$ and $\ell >0$.
 
-We can extrapolate these findings and argument that the recognition of a $(0,3)$-graph is also $NP$-Complete, as it is the same as recognize it's complement as a $(3,0)$-graph, and use the property of monotonicity to state that the recognition of any $(r,3)$-graph or $(0,\ell)$-graph is $NP$-Complete for $r > 0$ and $\ell >3$.
+We can extrapolate these findings and argument that the recognition of a $(0,3)$-graph is also $NP$-Complete,
+as it is the same as recognize it's complement as a $(3,0)$-graph,
+and use the property of monotonicity to state that the recognition of any $(r,3)$-graph or $(0,\ell)$-graph is $NP$-Complete for $r > 0$ and $\ell >3$.
 
 \begin{table}[h!]
   \caption{Incomplete complexity analysis of the \RL-partite recognition problem}
-  \label{}
   \center
   \begin{tabular}{l|*{6}c}
     \toprule
@@ -71,7 +79,7 @@ We can extrapolate these findings and argument that the recognition of a $(0,3)$
     3 & \NPc & \NPc & \NPc & \NPc & \NPc & \ldots \\
     4 & \NPc & \NPc & \NPc & \NPc & \NPc & \ldots \\
     $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ \\
-  \end{tabular}
+  \end{tabular}\label{tab:pre}
 \end{table}
 
 \subsection{Frontier results}
@@ -85,7 +93,7 @@ Finally, the frontier cases $(1,2)$,$(2,1)$ and $(2,2)$ were subject of studies 
 
 \begin{table}[h!]
   \caption{Current complexity analysis of the \RL-partite recognition problem}
-  \label{table:current-values}
+  \label{tab:current-values}
   \center
   \begin{tabular}{l|*{6}c}
     \toprule
@@ -120,7 +128,7 @@ Let A be the set of vertices that is satisfied by (N1), let B be the set o verti
 This conditions leads us to the following algorithm:
 
 
-\begin{code}{Get (2,1)-partition}
+\begin{code}{Brandstadt}
   def Get_21(Graph G) 2-1-Partition
     for v in V(G) do
       N = |$N(v)$| # open neighboorhood of v

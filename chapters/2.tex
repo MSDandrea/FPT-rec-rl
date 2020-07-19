@@ -1,31 +1,34 @@
-\chapter{Our strategy}
+\chapter{Our strategy}\label{ch:os}
 
-\section{Finding the 3,1 partition}
 
-\section{Odd Cycle transverse}
+\section{Finding the 3,1 partition}\label{sec:3,1-partition}
 
-\section{The critical paths}
+As seen on the Brandstädt's algorithm every vertex of a 2,1 partition must at least be compliance to one of the neighborhood rules:
 
-\section{Finding the viable movements on the critical paths}
+\begin{itemize}
+  \item (N1) $N(v)$ induces a split graph.
+  \item (N2) Or, $\bar{N}(v)$ should induce a bipartite graph.
+\end{itemize}
 
-\section{The Algorithm}
+If every vertex match exactly one of these rules, then the Graph is known to be a 2,1 Graph.
+On the other hand if any vertex does not match N1 or N2 then the Graph is bound to not have a 2,1 partition.
+However, when a vertex matches both N1 and N2 the graph could have a 2,1 partition but clearly has a 3,1 partition as the union of the induced split of it's open neighborhood, and the bipartite induced by its complement describe such partition.
 
-\subsection{Pseudo-Code}
-
-\begin{code}{My Code}
+Therefore, the following algorithm can be declared.
+\begin{code}{Get 2-1-Partition}
 def Get_21(Graph G) 2-1-Partition
   cl = new Graph #intended clique
   bi = new Graph #intended bipartite 
-  for v in V(G) do # $\O{n}$
-      N = |$N(v)$| # open neighboorhood of v
+  for v in V(G) do # O(n)
+      N = |$N(v)$| # open neighborhood of v
       K = |$\bar{N}(v)$| # V(G) - N
-      if N.is_Split() then # $\O{m}$
+      if N.is_Split() then # O(m)
         bi.Add(v)
-      if K.is_Bipartite() then # $\O{m}$
+      if K.is_Bipartite() then # O(m)
         cl.Add(v)
       if (!bi.contains(v) and !cl.contains(v)) then
        return None; # G $\notin$ (2,1)
-  end # $\O{n*m}$
+  end # O(n*m)
   if |$cl.V \cap bi.V = \emptyset$| then
     if (!cl.is_Clique() or !bi._is_Bipatite()) then
       return None; # G $\notin$ (2,1)
@@ -36,7 +39,7 @@ def Get_21(Graph G) 2-1-Partition
     }
   else 
     using any |$v \in cl.V \cap bi.V$|
-    N = |$N(v)$| # open neighboorhood of v
+    N = |$N(v)$| # open neighborhood of v
     K = |$\bar{N}(v)$| # V(G) - N
     tr = new 3-1-Partition{
           |$C$|: N.Clique,
@@ -49,6 +52,24 @@ def Get_21(Graph G) 2-1-Partition
 end
 \end{code}
 
+\section{Odd Cycle transversal}\label{sec:oct}
+
+The Odd Cycle transversal can be described as the problem of finding a subset of vertices of a graph such that when removed from said graph makes it a bipartite graph.
+This problem is known to be NP-Complete, however, Reed, Smith and Vetta presented a fixed-parameter tractable algorithm for this problem.
+Such algorithm obtain the desirable subset running in time $3^kn^{\mathcal{O}(1)}$ \cite{reed-04}
+
+Is imperative we further analyze this algorithm, as it's strategy will be relevant for our next steps.
+
+\section{The critical paths}\label{sec:tcp}
+
+
+\section{Finding the viable movements on the critical paths}\label{sec:path-movements}
+
+
+\section{The Algorithm}
+
+\subsection{Pseudo-Code}
+
 \begin{code}{3-1-to-2-1}
 def 3-1-to-2-1(Graph-3-1 G)
   tri = |$G.I_1 \cup G.I_2 \cup G.I_3$| 
@@ -56,13 +77,13 @@ def 3-1-to-2-1(Graph-3-1 G)
   case oct is None then
     return None; # There's more then 3 vertices in the tripartite that should move.
   case oct = 1 then
-    for v in tri.v do #$\O{n}$
+    for v in tri.v do # O(n)
       inter = |$\bar{N}(v) \cap G.C$|
       if size(inter) > 2 then
         break loop; 
       cl = G.C - inter + v
       bi = tri - v + inter
-      if (cl.is_Clique() and bi.is_Bipartite()) then #$\O{m}$
+      if (cl.is_Clique() and bi.is_Bipartite()) then # O(m)
         return new 2-1-patition{
           |$C$|: cl
           |$I_1$|: bi.|$I_1$|,
@@ -88,9 +109,9 @@ def 3-1-to-2-1(Graph-3-1 G)
 end
 \end{code}
 
-\begin{code}{CriticalPaths}
-def CriticalPaths(Tripartite)
-\end{code}
+% \begin{code}{CriticalPaths}
+% def CriticalPaths(Tripartite)
+% \end{code}
 
 \begin{code}{Transform2}
 def Transform2(Tripartite,clique,G)
