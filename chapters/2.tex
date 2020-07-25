@@ -6,8 +6,8 @@
 As seen on the Brandstädt's algorithm every vertex of a 2,1 partition must at least be compliance to one of the neighborhood rules:
 
 \begin{itemize}
-  \item (N1) $N(v)$ induces a split graph.
-  \item (N2) Or, $\bar{N}(v)$ should induce a bipartite graph.
+    \item (N1) $N(v)$ induces a split graph.
+    \item (N2) Or, $\bar{N}(v)$ should induce a bipartite graph.
 \end{itemize}
 
 If every vertex match exactly one of these rules, then the Graph is known to be a 2,1 Graph.
@@ -15,10 +15,11 @@ On the other hand if any vertex does not match N1 or N2 then the Graph is bound 
 However, when a vertex matches both N1 and N2 the graph could have a 2,1 partition but clearly has a 3,1 partition as the union of the induced split of it's open neighborhood, and the bipartite induced by its complement describe such partition.
 
 Therefore, the following algorithm can be declared.
+%% @formatter:off
 \begin{code}{Get 2-1-Partition}
 def Get_21(Graph G) 2-1-Partition
   cl = new Graph #intended clique
-  bi = new Graph #intended bipartite 
+  bi = new Graph #intended bipartite
   for v in V(G) do # O(n)
       N = |$N(v)$| # open neighborhood of v
       K = |$\bar{N}(v)$| # V(G) - N
@@ -37,7 +38,7 @@ def Get_21(Graph G) 2-1-Partition
       |$I_1$|: bi.|$I_1$|,
       |$I_2$|: bi.|$I_2$|
     }
-  else 
+  else
     using any |$v \in cl.V \cap bi.V$|
     N = |$N(v)$| # open neighborhood of v
     K = |$\bar{N}(v)$| # V(G) - N
@@ -51,14 +52,78 @@ def Get_21(Graph G) 2-1-Partition
   end
 end
 \end{code}
+%% @formatter:on
+
 
 \section{Odd Cycle transversal}\label{sec:oct}
 
 The Odd Cycle transversal can be described as the problem of finding a subset of vertices of a graph such that when removed from said graph makes it a bipartite graph.
 This problem is known to be NP-Complete, however, Reed, Smith and Vetta presented a fixed-parameter tractable algorithm for this problem.
-Such algorithm obtain the desirable subset running in time $3^kn^{\mathcal{O}(1)}$ \cite{reed-04}
+Such algorithm obtains the desirable subset running in time $3^{k}n^{\mathcal{O}(1)}$ \cite{reed-04}
 
 Is imperative we further analyze this algorithm, as it's strategy will be relevant for our next steps.
+
+\subsection{The iterative compression technique}\label{subsec:the-iterative-compression-technique}
+
+The solution developed in~\cite{reed-04} is the base for the now called Iterative Compression technique;
+A compression can be described as following:
+
+\begin{itemize}
+    \item Assume there is a non-optimal solution $S$ of size $k+1$ for the problem $A$
+    \item Using the given solution as input find a solution for the Disjoint-$A$ problem, i.e. find a smaller solution $X$ of size $k$ in $G-P_S$ where $P_S$ is every subset of $S$ of size $ \leq |S| - |X|$.
+\end{itemize}
+
+
+It's trivial to notice that this steps can be applied as many times as needed to reduce the non-optimal solution to the desired size solution,
+or to declare that such solution does not exist, therefore the iterative part of the technique name.
+Some solutions for the problems \emph{Vertex Cover, Feedback Vertex Set, Feedback Vertex Set in Tournaments} and the solution we used can be found in~\cite{cygan-2015}
+
+\subsection{A FPT Solution of Odd Cycle Transversal}\label{subsec:fpt-solution-oct}
+
+As we described at \ref{sec:oct}, $X$ is an odd cycle transversal of $G$ if the graph $G-X$ is bipartite.
+In order to use the steps declared on \ref{subsec:the-iterative-compression-technique} we must define Disjoint-Odd Cycle Transversal.
+
+The input of this problem is $G$ an undirected graph, an odd cycle transversal $W$ of size $k+1$ and a positive integer $k$.
+The objective is to find an odd cycle transversal $X \subseteq V(G) \setminus W$ of size at most $k$ or to conclude that $X$ does not exist.
+The presented algorithm gives a solution in time $2^{k}n^{\mathcal{O}(1)}$.
+
+The algorithm For Disjoint-Odd Cycle Transversal will use the following annotated problem as a subroutine.
+In the \emph{Annotated Bipartite Coloring} problem, we are given an undirected graph $G$, two sets $B_1,B_2 \subseteq V(G)$ and a positive integer $k$.
+The goal is to find a subset $X$ of $V(G)$ with size at most $k$ such that $G-X$ has a coloring $f : V(G) \setminus X \rightarrow {1,2}$ where $f(v) \neq f(u)$ for every edge $(u,v)$
+and $f(v) = i$ whenever $v \in B_i \setminus X$, i.e. if a vertex $v$ is originally in $B_1$ the color of it in the result shall be $f(v)=1$.
+
+\textbf{Annotated Bipartite Coloring algorithm.}
+
+Let $(G,B_1,B_2,k)$ be an instance of Annotated Bipartite Coloring.
+We can view the vertices of $B_1$ and $B_2$ as precolored vertices from a function $l$, i.e. if $v \in B_i$ then $l(v)=i$.
+Is important to notice that $B_1$ adn $B_2$ are not disjoint, meaning any vertex can have both colors, also, $l$ does not necessarily provide a proper coloring,
+allowing the coloring $l(v)=l(u)$ for an edge $(v,u)$.
+
+We want to find a set $X$ of size at most $k$ such that in graph $G-X$ there is a proper 2-coloring $f$ extending precolored vertices.
+To find such coloring we proceed as follows.
+
+Fix an arbitrary \emph{proper} 2-coloring $f$ of $G$ issuing the $B_1^*,B_2^*$ partitions, such coloring exists as $G$ is bipartite.
+Let $C$ be the following set $C := (B_1 \cap B_2^*) \cup (B_2 \cap B_1^*)$, every vertex in $C$ should either be included in $X$ or have "changed" colors,
+and similarly each vertex in $R := (B_1 \cap B_1^*) \cup (B_2 \cap B_2^*)$ have retained its color or is a vertex in $X$.
+
+The following lemma helps us solve the annotated problem.
+
+\begin{lemma}\label{lemma:annotated-bipartite-coloring}
+  Let $G$ be a bipartite graph and $f$ an arbitrary proper coloring of $G$.
+  Then set $X$ is a solution to the Annotated Bipartite Coloring problem if and only if $X$ separates $C$ and $R$.
+  Furthermore, provided that such $X$ of size $k$ exists it can be found in time \O{k(n*m)}.
+\end{lemma}
+\begin{proof}
+  In a proper 2-coloring $f$ of $G-X$, each vertex of $V(G) \setminus X$ either keeps the same color ($f(v)=l(v)$) or changes it colors ($f(v) \neq l(v)$).
+  Moreover, every vertex in a connected component of $G$ must make the same decision in order to maintain the proper coloration, i.e. for every edge $(u,v)$ if $v$ changed then $u$ has to change.
+  Therefore, no connected component of $G \setminus X$ may contain a vertex from both $R$ and $C$.
+  Consequently, $X$ has to be a separating set of $R$ and $C$.
+
+  Let $X$ be a set separating $R$ and $C$, and $f$ an 
+\end{proof}
+
+
+
 
 \section{The critical paths}\label{sec:tcp}
 
@@ -70,9 +135,10 @@ Is imperative we further analyze this algorithm, as it's strategy will be releva
 
 \subsection{Pseudo-Code}
 
+%% %% @formatter:off
 \begin{code}{3-1-to-2-1}
 def 3-1-to-2-1(Graph-3-1 G)
-  tri = |$G.I_1 \cup G.I_2 \cup G.I_3$| 
+  tri = |$G.I_1 \cup G.I_2 \cup G.I_3$|
   oct = Odd-Cycle-Transversal(tri,3)
   case oct is None then
     return None; # There's more then 3 vertices in the tripartite that should move.
@@ -80,7 +146,7 @@ def 3-1-to-2-1(Graph-3-1 G)
     for v in tri.v do # O(n)
       inter = |$\bar{N}(v) \cap G.C$|
       if size(inter) > 2 then
-        break loop; 
+        break loop;
       cl = G.C - inter + v
       bi = tri - v + inter
       if (cl.is_Clique() and bi.is_Bipartite()) then # O(m)
@@ -98,21 +164,19 @@ def 3-1-to-2-1(Graph-3-1 G)
     for v in oct do
       inter = |$\bar{N}(v) \cap G.C$|
       if size(inter) > 2 then
-        break loop; 
+        break loop;
       cl = G.C - inter + v
       neoTri = tri - v + inter
       result = Transform2(neoTri,cl,G)
       if result is not None then
         return result;
     end
-    return None; 
+    return None;
 end
 \end{code}
+%% @formatter:on
 
-% \begin{code}{CriticalPaths}
-% def CriticalPaths(Tripartite)
-% \end{code}
-
+%% @formatter:off
 \begin{code}{Transform2}
 def Transform2(Tripartite,clique,G)
   |$P_1$|, |$P_2$| = CriticalPaths(Tripartite)
@@ -127,12 +191,12 @@ def Transform2(Tripartite,clique,G)
     previous = v.prev
     rank = v.position
     if previous is not None then
-      # rank is either v position or the foremost 
+      # rank is either v position or the foremost
       # vertex that can be reached by the previous vertex
-      rank = Max(rank, rank1[previous][1]) 
+      rank = Max(rank, rank1[previous][1])
       # max_out is the max between the farthest
       # vertex that can be reached by v or by the previous vertex
-      max_out = Max(max_out,rank1[previous][1])  
+      max_out = Max(max_out,rank1[previous][1])
     end
     rank1[v][0] = rank
     rank1[v][1] = max_out
@@ -146,12 +210,12 @@ def Transform2(Tripartite,clique,G)
     previous = u.prev
     rank = u.position
     if previous is not None then
-      # rank is either u position or the foremost 
+      # rank is either u position or the foremost
       # vertex that can be reached by the previous vertex
-      rank = Max(rank, rank2[previous][1]) 
+      rank = Max(rank, rank2[previous][1])
       # max_out is the max between the farthest
-      # vertex that can be reached by u or by the previous vertex 
-      max_out = Max(max_out,rank2[previous][1]) 
+      # vertex that can be reached by u or by the previous vertex
+      max_out = Max(max_out,rank2[previous][1])
     end
     rank2[u][0] = rank
     rank2[u][1] = max_out
@@ -164,12 +228,12 @@ def Transform2(Tripartite,clique,G)
     previous = v.prev
     rank = v.position
     if previous is not None then
-      # rank is either v position or the foremost 
+      # rank is either v position or the foremost
       # vertex that can be reached by the previous vertex in $P_1$
-      rank = Max(rank, rank1[previous][1]) 
+      rank = Max(rank, rank1[previous][1])
       # max_out is the max between the farthest
       # vertex that can be reached by v or by the previous vertex
-      max_out = Max(max_out,rank1[previous][1])  
+      max_out = Max(max_out,rank1[previous][1])
     end
     rank1[v][0] = rank
     rank1[v][1] = max_out
@@ -182,25 +246,25 @@ def Transform2(Tripartite,clique,G)
     previous = u.prev
     rank = u.position
     if previous is not None then
-      # rank is either u position or the foremost 
+      # rank is either u position or the foremost
       # vertex that can be reached by the previous vertex in $P_2$
-      rank = Max(rank, rank2[previous][1]) 
+      rank = Max(rank, rank2[previous][1])
       # max_out is the max between the farthest
       # vertex that can be reached by v or by the previous vertex
-      max_out = Max(max_out,rank2[previous][1])  
+      max_out = Max(max_out,rank2[previous][1])
     end
     rank2[v][0] = rank
     rank2[v][1] = max_out
   end
   for z in |$V(clique)$| do # for all vertex in the clique
     # take all edges on the tripartite that have an end on z
-    for e(z,i) in |$E(Tripartite \cap N[z])$| do 
+    for e(z,i) in |$E(Tripartite \cap N[z])$| do
       z.left_u = |$+\infty$|
       z.left_v = |$+\infty$|
       z.right_u = 0
       z.right_v = 0
       # Find which are the closest and farthest vertex in $P_1$ z can reach
-      if i in |$V(G[P_1])$| then 
+      if i in |$V(G[P_1])$| then
         if i.position < z.left_u then
           z.left_u = i.position
         end
@@ -209,14 +273,14 @@ def Transform2(Tripartite,clique,G)
         end
       end
       # Find which are the closest and farthest vertex in $P_2$ z can reach
-      if i in |$V(G[P_2])$| then 
+      if i in |$V(G[P_2])$| then
         if i.position < z.left_v then
           z.left_v = i.position
         end
         if i.position > z.right_v then
           z.right_v = i.position
         end
-      end  
+      end
     end
   end
   for |$e(u,v) \in E(G)$| where |$u \in V(G[P_1])$| and |$u \in V(G[P_1])$| do
@@ -269,10 +333,10 @@ def Transform2(Tripartite,clique,G)
          end
        end
      end
-    end    
+    end
   end
   return None;
 end
 \end{code}
+%% @formatter:on
 
-\subsection{Correctness}
