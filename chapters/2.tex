@@ -102,27 +102,31 @@ allowing the coloring $l(v)=l(u)$ for an edge $(v,u)$.
 We want to find a set $X$ of size at most $k$ such that in graph $G-X$ there is a proper 2-coloring $f$ extending precolored vertices.
 To find such coloring we proceed as follows.
 
-Fix an arbitrary \emph{proper} 2-coloring $f$ of $G$ issuing the $B_1^*,B_2^*$ partitions, such coloring exists as $G$ is bipartite.
+Fix an arbitrary \emph{proper} 2-coloring $f^*$ of $G$ issuing the $B_1^*,B_2^*$ partitions, such coloring exists as $G$ is bipartite.
 Let $C$ be the following set $C := (B_1 \cap B_2^*) \cup (B_2 \cap B_1^*)$, every vertex in $C$ should either be included in $X$ or have "changed" colors,
 and similarly each vertex in $R := (B_1 \cap B_1^*) \cup (B_2 \cap B_2^*)$ have retained its color or is a vertex in $X$.
-
 The following lemma helps us solve the annotated problem.
 
 \begin{lemma}\label{lemma:annotated-bipartite-coloring}
-  Let $G$ be a bipartite graph and $f$ an arbitrary proper coloring of $G$.
+  Let $G$ be a bipartite graph and $f^*$ an arbitrary proper coloring of $G$.
   Then set $X$ is a solution to the Annotated Bipartite Coloring problem if and only if $X$ separates $C$ and $R$.
   Furthermore, provided that such $X$ of size $k$ exists it can be found in time \O{k(n*m)}.
 \end{lemma}
 \begin{proof}
-  In a proper 2-coloring $f$ of $G-X$, each vertex of $V(G) \setminus X$ either keeps the same color ($f(v)=l(v)$) or changes it colors ($f(v) \neq l(v)$).
+  In a proper 2-coloring $f$ of $G-X$, each vertex of $V(G) \setminus X$ either keeps the same color ($f(v)=f^*(v)$) or changes it colors ($f(v) \neq f^*(v)$).
   Moreover, every vertex in a connected component of $G$ must make the same decision in order to maintain the proper coloration, i.e. for every edge $(u,v)$ if $v$ changed then $u$ has to change.
   Therefore, no connected component of $G \setminus X$ may contain a vertex from both $R$ and $C$.
   Consequently, $X$ has to be a separating set of $R$ and $C$.
 
-  Let $X$ be a set separating $R$ and $C$, and $f$ an 
+  Let $X$ be a set separating $R$ and $C$, define $f$ as follows: First set $f=f^*$ and then flip the coloring of those components go $G-X$ that contain at least one vertex of $C \setminus X$.
+  As $X$ is a separating set no vertex of $R$ is flipped and thus we have a proper 2-coloring.
+
+  To find a  vertex set of size at most $k$ separating $R$ from $C$ one can use the classic max-flox min-cut techniques,
+  e.g. by applying $k$ times the iteration of the Ford-Fulkerson algorithm obtaining the promised time bound. %adicionar o algoritmo de ford fulkerson no apendice?
 \end{proof}
 
-
+Now we can apply this solution to the Annotated Bipartite Coloring to solve ou Odd Cycle transversal problem.
+In order to do so, recall that we have to solve the Disjoint version of this problem, i.e. given  
 
 
 \section{The critical paths}\label{sec:tcp}
